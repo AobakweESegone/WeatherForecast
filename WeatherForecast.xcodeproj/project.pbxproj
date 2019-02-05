@@ -8,20 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		E23225E8220A0B74005278D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23225E7220A0B74005278D4 /* AppDelegate.swift */; };
-		E23225EA220A0B74005278D4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23225E9220A0B74005278D4 /* ViewController.swift */; };
 		E23225ED220A0B74005278D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E23225EB220A0B74005278D4 /* Main.storyboard */; };
 		E23225EF220A0B7F005278D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E23225EE220A0B7F005278D4 /* Assets.xcassets */; };
 		E23225F2220A0B7F005278D4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E23225F0220A0B7F005278D4 /* LaunchScreen.storyboard */; };
+		E23225FC220A1765005278D4 /* WeatherForecastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23225FB220A1765005278D4 /* WeatherForecastViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E23225E4220A0B74005278D4 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E23225E7220A0B74005278D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E23225E9220A0B74005278D4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E23225EC220A0B74005278D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E23225EE220A0B7F005278D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E23225F1220A0B7F005278D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E23225F3220A0B7F005278D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E23225FB220A1765005278D4 /* WeatherForecastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,11 +55,11 @@
 			isa = PBXGroup;
 			children = (
 				E23225E7220A0B74005278D4 /* AppDelegate.swift */,
-				E23225E9220A0B74005278D4 /* ViewController.swift */,
 				E23225EB220A0B74005278D4 /* Main.storyboard */,
 				E23225EE220A0B7F005278D4 /* Assets.xcassets */,
 				E23225F0220A0B7F005278D4 /* LaunchScreen.storyboard */,
 				E23225F3220A0B7F005278D4 /* Info.plist */,
+				E23225FB220A1765005278D4 /* WeatherForecastViewController.swift */,
 			);
 			path = WeatherForecast;
 			sourceTree = "<group>";
@@ -135,7 +135,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E23225EA220A0B74005278D4 /* ViewController.swift in Sources */,
+				E23225FC220A1765005278D4 /* WeatherForecastViewController.swift in Sources */,
 				E23225E8220A0B74005278D4 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,17 +282,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 958MSQTU32;
 				INFOPLIST_FILE = WeatherForecast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.aobakwesegone.WeatherForecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -300,17 +303,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 958MSQTU32;
 				INFOPLIST_FILE = WeatherForecast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.aobakwesegone.WeatherForecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
