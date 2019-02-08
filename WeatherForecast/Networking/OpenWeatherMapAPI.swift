@@ -87,20 +87,7 @@ struct AESOpenWeatherMapAPI {
     static func weatherFromJSONData(data: Data) -> WeatherResult {
         do {
             let weatherForecast = try JSONDecoder().decode(WeatherForecastAPI.self, from: data)
-            let weatherList = weatherForecast // a list of ForecastHour
-            
-                        var forecastArray = [FiveDayForecastWeather]()
-            
-                        for forecastWeather in weatherList.list {
-                            // generate weather objects
-                            if let weatherObject = weatherFromModelledObject(modelledObject: forecastWeather) {
-                                // add to the AESWeather array
-                                forecastArray.append(weatherObject)
-                                print(weatherObject)
-                            }
-                        }
-            
-            return .Success(weatherList)
+            return .Success(weatherForecast)
         }
         catch let error {
             return .Failure(.unknown(error.localizedDescription))

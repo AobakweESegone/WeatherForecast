@@ -102,7 +102,7 @@
                                         <rect key="frame" x="0.0" y="338.5" width="375" height="328.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="forecastWeatherCell" id="Fi4-oo-nks">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="forecastWeatherCell" id="Fi4-oo-nks" customClass="ForecastTableViewCell" customModule="WeatherForecast" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Fi4-oo-nks" id="ByU-g2-Vve">
@@ -146,7 +146,7 @@
                                                             </constraints>
                                                         </view>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="VbL-S9-MpT">
-                                                            <rect key="frame" x="172" y="7" width="30" height="30"/>
+                                                            <rect key="frame" x="172.5" y="7" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="XgT-7W-Bjl"/>
                                                                 <constraint firstAttribute="height" constant="30" id="rQR-Jg-oFs"/>
@@ -167,6 +167,11 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <outlet property="conditionIcon" destination="VbL-S9-MpT" id="wux-Bf-YZY"/>
+                                                    <outlet property="maxTemperatureLabel" destination="Uw2-Pt-bNd" id="VJr-ps-2aT"/>
+                                                    <outlet property="minTemperatureLabel" destination="JWy-ly-3dk" id="6hj-M8-N7D"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
@@ -191,6 +196,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xXU-aI-Yw7"/>
                     </view>
+                    <connections>
+                        <outlet property="conditionDescriptionLabel" destination="lFa-a0-NXm" id="KV0-1e-81b"/>
+                        <outlet property="currentLocation" destination="zOb-sN-uCA" id="y3A-KM-5GJ"/>
+                        <outlet property="currentTempLabel" destination="by1-b8-fg9" id="OIJ-cL-tKp"/>
+                        <outlet property="currentWeatherIcon" destination="8zV-iY-ZvJ" id="Yne-VT-BMU"/>
+                        <outlet property="forecastTableView" destination="ej3-0U-EJm" id="HFP-3X-12W"/>
+                        <outlet property="minMaxTemperatureLabel" destination="rpq-hR-3jG" id="CTX-Zc-LFX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pqb-0Q-JQ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
