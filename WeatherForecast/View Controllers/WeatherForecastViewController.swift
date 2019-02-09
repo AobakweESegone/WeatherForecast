@@ -52,6 +52,8 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
             OperationQueue.main.addOperation {
                 self.forecastTableView.reloadData()
             }
+            
+            currentLocation.text = "\(forecastWeatherList.city.name)\n\(forecastWeatherList.city.country)"
         }
     }
     
@@ -136,15 +138,15 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
             cell.conditionIcon.image = image
         })
         
-        let today = " today"
+        let today = ", today"
         if indexPath.row == 0 {
             cell.weekDayLabel.text = "\(formatDate(dateString: weatherCell.weekDay))" + today
         } else {
             cell.weekDayLabel.text = "\(formatDate(dateString: weatherCell.weekDay))"
         }
         
-        cell.minTemperatureLabel.text = "\(weatherCell.minimumTemperature.rounded(.toNearestOrAwayFromZero))"
-        cell.maxTemperatureLabel.text = "\(weatherCell.maximumTemperature.rounded(.toNearestOrAwayFromZero))"
+        cell.minTemperatureLabel.text = "\(Int(weatherCell.minimumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
+        cell.maxTemperatureLabel.text = "\(Int(weatherCell.maximumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
         
         return cell
     }

@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         weatherForecastViewController.store = WeatherStore()
         let weatherStore = WeatherStore()
         
-        weatherStore.fetchfiveDayWeatherForecast(with: "-25.92", and: "28.14") { (weatherResult) in
+        weatherStore.fetchfiveDayWeatherForecast(with: "-25.96", and: "28.14") { (weatherResult) in
             switch weatherResult {
             case let .Success(weather):
                 print("successfully decoded weather data:\n\(weather)")
