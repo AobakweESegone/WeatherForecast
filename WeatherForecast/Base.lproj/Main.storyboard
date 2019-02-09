@@ -171,6 +171,7 @@
                                                     <outlet property="conditionIcon" destination="VbL-S9-MpT" id="wux-Bf-YZY"/>
                                                     <outlet property="maxTemperatureLabel" destination="Uw2-Pt-bNd" id="VJr-ps-2aT"/>
                                                     <outlet property="minTemperatureLabel" destination="JWy-ly-3dk" id="6hj-M8-N7D"/>
+                                                    <outlet property="weekDayLabel" destination="rIb-9j-Duo" id="Uoy-QC-m1W"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
