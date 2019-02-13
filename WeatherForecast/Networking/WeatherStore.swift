@@ -25,7 +25,7 @@ class WeatherStore {
         return URLSession(configuration: config)
     }()
     
-    func fetchCurrentWeather(with latitude: String, and longitude: String, completion: @escaping (WeatherResult) -> Void) {
+    func fetchCurrentWeather(with latitude: String, and longitude: String, completion: @escaping (CurrentWeatherResult) -> Void) {
         let currentWeatherURL = AESOpenWeatherMapAPI.currentWeatherURL(for: latitude, and: longitude) as URL
         //let request = URLRequest(url: currentWeatherURL )
         let task = session.dataTask(with: currentWeatherURL) {
@@ -44,14 +44,12 @@ class WeatherStore {
                 completion(.Failure(.apiError))
                 return
             }
-            print("result is \(stringWithData)")
             
             let dataFromString = stringWithData.data(using: String.Encoding.utf8)
             let data = NSData(data: dataFromString!)
-            print("data from string: \(String(describing: data))")
             
             // serialize to model objects
-            let result = AESOpenWeatherMapAPI.weatherFromJSONData(data: data as Data)
+            let result = AESOpenWeatherMapAPI.currentWeatherFromJSONData(data: data as Data)
             completion(result)
         }
         task.resume()
@@ -76,14 +74,12 @@ class WeatherStore {
                 completion(.Failure(.apiError))
                 return
             }
-            print("result is \(stringWithData)")
             
             let dataFromString = stringWithData.data(using: String.Encoding.utf8)
             let data = NSData(data: dataFromString!)
-            print("data from string: \(String(describing: data))")
             
             // serialize to model objects
-            let result = AESOpenWeatherMapAPI.weatherFromJSONData(data: data as Data)
+            let result = AESOpenWeatherMapAPI.forecastWeatherFromJSONData(data: data as Data)
             completion(result)
         }
         task.resume()
@@ -95,7 +91,6 @@ class WeatherStore {
         let task = session.dataTask(with: request) {
             (imageData, response, error) in
             let dataImage = NSData(data: imageData!)
-            print("data from string: \(String(describing: dataImage))")
             
             let result = self.processImageRequest(data: dataImage as Data, error: error)
             

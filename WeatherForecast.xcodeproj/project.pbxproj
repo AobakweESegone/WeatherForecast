@@ -19,6 +19,7 @@
 		E2B294C2220CD51A004401EB /* WeatherStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B294C1220CD51A004401EB /* WeatherStore.swift */; };
 		E2C855FB220DAB6A00F2E092 /* ForecastWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C855FA220DAB6A00F2E092 /* ForecastWeatherCell.swift */; };
 		E2C855FE220DADCB00F2E092 /* ForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C855FD220DADCB00F2E092 /* ForecastTableViewCell.swift */; };
+		E2FC62BB2213C1D500ACA21E /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FC62BA2213C1D500ACA21E /* CurrentWeather.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		E2B294C1220CD51A004401EB /* WeatherStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherStore.swift; sourceTree = "<group>"; };
 		E2C855FA220DAB6A00F2E092 /* ForecastWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastWeatherCell.swift; sourceTree = "<group>"; };
 		E2C855FD220DADCB00F2E092 /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
+		E2FC62BA2213C1D500ACA21E /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 			children = (
 				E2B294BF220CD3B9004401EB /* FiveDayForecastWeather.swift */,
 				E2C855FA220DAB6A00F2E092 /* ForecastWeatherCell.swift */,
+				E2FC62BA2213C1D500ACA21E /* CurrentWeather.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 				E2C855FB220DAB6A00F2E092 /* ForecastWeatherCell.swift in Sources */,
 				E2B294BB220CC6A3004401EB /* ForecastWeather.swift in Sources */,
 				E2B294C2220CD51A004401EB /* WeatherStore.swift in Sources */,
+				E2FC62BB2213C1D500ACA21E /* CurrentWeather.swift in Sources */,
 				E2C855FE220DADCB00F2E092 /* ForecastTableViewCell.swift in Sources */,
 				E2B294BE220CD206004401EB /* OpenWeatherMapAPI.swift in Sources */,
 				E2B294C0220CD3B9004401EB /* FiveDayForecastWeather.swift in Sources */,

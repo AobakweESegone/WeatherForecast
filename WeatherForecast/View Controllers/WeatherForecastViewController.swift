@@ -32,6 +32,7 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(receivedCurrentWeather), name: NSNotification.Name(rawValue: "Current Weather Available"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(receivedForecastWeather), name: NSNotification.Name(rawValue: "ForecastWeather Available"), object: nil)
     }
     
@@ -54,6 +55,25 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
             }
             
             currentLocation.text = "\(forecastWeatherList.city.name)\n\(forecastWeatherList.city.country)"
+        }
+    }
+    
+    @objc func receivedCurrentWeather(notification: Notification) {
+        if notification.name.rawValue == "Current Weather Available" {
+             let currentWeather: CurrentWeatherAPI = notification.userInfo!["currentWeather"] as! CurrentWeatherAPI
+            
+            self.currentTempLabel.text = "\(Int(currentWeather.main.currentTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
+            self.minMaxTemperatureLabel.text = "\(Int(currentWeather.main.minimumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0} / \(Int(currentWeather.main.maximumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
+            self.conditionDescriptionLabel.text = "\(currentWeather.weather[0].description)"
+            
+            guard let imageData = try? Data(contentsOf: URL(string: "https://openweathermap.org/img/w/\(currentWeather.weather[0].icon).png")!) else {
+                return
+            }
+            let image = UIImage(data: imageData)
+            OperationQueue.main.addOperation {
+                self.currentWeatherIcon.image = image!
+            }
+            
         }
     }
     
@@ -102,7 +122,6 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
         var dayName: String = ""
         
         if let dayOfWeek = DaysOfTheWeek(rawValue: weekDay) {
-            print("day of week = \(dayOfWeek)")
             switch dayOfWeek {
             case .Monday:
                 dayName = "Monday"
@@ -124,7 +143,7 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
         return dayName
     }
     
-    // UITableViewDataSource
+    //MARK:-  UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellViewModels.count
     }

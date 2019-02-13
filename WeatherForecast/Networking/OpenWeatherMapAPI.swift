@@ -13,6 +13,11 @@ enum EndPoint: String {
     case fiveDayWeatherForecast = "api.openweathermap.org/data/2.5/forecast"
 }
 
+enum CurrentWeatherResult {
+    case Success(CurrentWeatherAPI)
+    case Failure(WeatherAPIError)
+}
+
 enum WeatherResult {
     case Success(WeatherForecastAPI)
     case Failure(WeatherAPIError)
@@ -84,10 +89,20 @@ struct AESOpenWeatherMapAPI {
     }
     
     // serialize the incoming data to foundation objects
-    static func weatherFromJSONData(data: Data) -> WeatherResult {
+    static func forecastWeatherFromJSONData(data: Data) -> WeatherResult {
         do {
             let weatherForecast = try JSONDecoder().decode(WeatherForecastAPI.self, from: data)
             return .Success(weatherForecast)
+        }
+        catch let error {
+            return .Failure(.unknown(error.localizedDescription))
+        }
+    }
+    
+    static func currentWeatherFromJSONData(data: Data) -> CurrentWeatherResult {
+        do {
+            let currentWeatherForecast = try JSONDecoder().decode(CurrentWeatherAPI.self, from: data)
+            return .Success(currentWeatherForecast)
         }
         catch let error {
             return .Failure(.unknown(error.localizedDescription))
