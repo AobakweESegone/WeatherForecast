@@ -69,14 +69,14 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     @objc func receivedCurrentWeather(notification: Notification) {
         if notification.name.rawValue == "Current Weather Available" {
              let currentWeather: CurrentWeatherAPI = notification.userInfo!["currentWeather"] as! CurrentWeatherAPI
-            
-            self.cloudsCoverage.text = "\(currentWeather.clouds.all) %"
-            self.visibility.text = "\(currentWeather.visibility) km"
-            self.pressure.text = "\(currentWeather.main.pressure) hPa"
-            self.humidity.text = "\(currentWeather.main.humidity) %"
-            self.currentTempLabel.text = "\(Int(currentWeather.main.currentTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
-            self.sunrise.text = "\(currentWeather.sys.sunrise)"
-            self.sunset.text = "\(currentWeather.sys.sunrise)"
+//
+//            self.cloudsCoverage.text = "\(currentWeather.clouds.all) %"
+//            self.visibility.text = "\(currentWeather.visibility) km"
+//            self.pressure.text = "\(currentWeather.main.pressure) hPa"
+//            self.humidity.text = "\(currentWeather.main.humidity) %"
+//            self.currentTempLabel.text = "\(Int(currentWeather.main.currentTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
+//            self.sunrise.text = "\(currentWeather.sys.sunrise)"
+//            self.sunset.text = "\(currentWeather.sys.sunrise)"
             self.minTemperatureLabel.text = "\(Int(currentWeather.main.minimumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
             self.maxTemperatureLabel.text = "\(Int(currentWeather.main.minimumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
             self.conditionDescriptionLabel.text = "\(currentWeather.weather[0].description)"
