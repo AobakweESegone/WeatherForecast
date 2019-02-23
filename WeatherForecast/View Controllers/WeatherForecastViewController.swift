@@ -7,14 +7,18 @@
 //
 
 import UIKit
+import CoreLocation
 
 enum DaysOfTheWeek: Int {
     case Sunday = 1, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
 }
 
-class WeatherForecastViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WeatherForecastViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate {
     var store: WeatherStore!
     var cellViewModels = [ForecastWeatherCell]()
+    
+    let locationManager = CLLocationManager()
+    var didFindLocation: Bool?
     
     @IBOutlet weak var currentLocation: UILabel!
     @IBOutlet weak var backgroundImageView: UIImageView!
@@ -44,9 +48,11 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
         NotificationCenter.default.addObserver(self, selector: #selector(receivedForecastWeather), name: NSNotification.Name(rawValue: "ForecastWeather Available"), object: nil)
         
         self.forecastTableView.rowHeight = 90
+        
+        self.generateCurrentLocationCoordinates()
     }
     
-    // MARKS:- methods
+    // MARK:- methods
     
     @objc func receivedForecastWeather(notification: Notification) {
         if notification.name.rawValue == "ForecastWeather Available" {
@@ -171,7 +177,19 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
         return dayName
     }
     
-    //MARK:-  UITableViewDataSource
+    func generateCurrentLocationCoordinates() {
+        self.didFindLocation = false
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters  // not best for preventing too much power consumption
+        locationManager.distanceFilter = 100.0 // location services every 100m
+        locationManager.requestWhenInUseAuthorization()
+        
+        locationManager.requestLocation()
+    }
+    
+    // MARK:-  UITableViewDataSource
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellViewModels.count
     }
@@ -179,7 +197,7 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let weatherCell = cellViewModels[indexPath.row]
         
-        let cell: ForecastTableViewCell = tableView.dequeueReusableCell(withIdentifier: "forecastWeatherCell", for: indexPath) as! ForecastTableViewCell;
+        let cell: ForecastTableViewCell = tableView.dequeueReusableCell(withIdentifier: "forecastWeatherCell", for: indexPath) as! ForecastTableViewCell
         
         weatherCell.loadWeatherIcon(completion: { (image) in
             cell.conditionIcon.image = image
@@ -197,6 +215,91 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
         cell.forecastConditionDescription.text = weatherCell.forecastConditionDescription
         
         return cell
+    }
+    
+    // MARK:- location manager delegate
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let lat = locations.last?.coordinate.latitude, let long = locations.last?.coordinate.longitude {
+            
+            if didFindLocation != true {
+                didFindLocation = true
+                
+                print("location obtained: \(lat),\(long)")
+                
+                let latString = String(format: "%f", lat)
+                let longString = String(format: "%f", long)
+                
+                store.fetchCurrentWeather(with: latString, and: longString) { (weatherResult) in
+                    switch weatherResult {
+                    case let .Success(weather):
+                        
+                        let currentWeatherDictionary = ["currentWeather": weather]
+                        
+                        OperationQueue.main.addOperation {
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Current Weather Available"), object: nil, userInfo: currentWeatherDictionary)
+                        }
+                    case .Failure(_): break
+                    }
+                }
+                
+                store.fetchfiveDayWeatherForecast(with: latString, and: longString) { (weatherResult) in
+                    switch weatherResult {
+                    case let .Success(weather):
+                        
+                        let weatherForecastDictionary = ["forecastWeather": weather]
+                        
+                        OperationQueue.main.addOperation {
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ForecastWeather Available"), object: nil, userInfo: weatherForecastDictionary)
+                        }
+                    case .Failure(_): break
+                    }
+                }
+            }
+            
+        } else {
+            print("No coordinates")
+            
+            let alert = UIAlertController(title: "Location Data", message: "Location coordinates for your position could not be obtained.", preferredStyle: .alert)
+            let OK = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(OK)
+            self.present(alert, animated: true)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("encounted error: ", error.localizedDescription)
+        
+        let alert = UIAlertController(title: "Location Information", message: "Failed to obtain location information.", preferredStyle: .alert)
+        let OK = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(OK)
+        self.present(alert, animated: true)
+        
+        //self.activityIndicator.stopAnimating()
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedWhenInUse:
+            locationManager.requestWhenInUseAuthorization()
+        case .denied, .notDetermined, .restricted:
+            let alert = UIAlertController(title: "Location Services Disabled", message: "To get your weather information, please enable Location Services.", preferredStyle: .alert)
+            
+            let cancel = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+            alert.addAction(cancel)
+            
+            let open = UIAlertAction.init(title: "Open Settings", style: .default, handler: { (_) in
+                if let url = NSURL(string:UIApplication.openSettingsURLString) {
+                    UIApplication.shared.openURL(url as URL)
+                }
+            })
+            
+            alert.addAction(open)
+            self.present(alert, animated: true)
+        default:
+            break
+            
+        }
     }
 
 }

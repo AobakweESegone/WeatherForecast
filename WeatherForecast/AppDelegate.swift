@@ -18,33 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let rootViewController = window!.rootViewController as! WeatherForecastViewController
         let weatherForecastViewController = rootViewController
         weatherForecastViewController.store = WeatherStore()
-        let weatherStore = WeatherStore()
-        
-        weatherStore.fetchCurrentWeather(with: "-25.96", and: "28.14") { (weatherResult) in
-            switch weatherResult {
-            case let .Success(weather):
-                
-                let currentWeatherDictionary = ["currentWeather": weather]
-                
-                OperationQueue.main.addOperation {
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Current Weather Available"), object: nil, userInfo: currentWeatherDictionary)
-                }
-            case .Failure(_): break
-            }
-        }
-        
-        weatherStore.fetchfiveDayWeatherForecast(with: "-25.96", and: "28.14") { (weatherResult) in
-            switch weatherResult {
-            case let .Success(weather):
-                
-                let weatherForecastDictionary = ["forecastWeather": weather]
-                
-                OperationQueue.main.addOperation {
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ForecastWeather Available"), object: nil, userInfo: weatherForecastDictionary)
-                }
-            case .Failure(_): break
-            }
-        }
         
         return true
     }
