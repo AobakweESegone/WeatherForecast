@@ -14,6 +14,7 @@ class ForecastTableViewCell: UITableViewCell {
     @IBOutlet weak var conditionIcon: UIImageView!
     @IBOutlet weak var minTemperatureLabel: UILabel!
     @IBOutlet weak var maxTemperatureLabel: UILabel!
+    @IBOutlet weak var forecastConditionDescription: UILabel!
     
     var iconURL: URL!
     

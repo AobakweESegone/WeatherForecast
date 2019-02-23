@@ -14,6 +14,7 @@ struct ForecastWeatherCell {
     let minimumTemperature: Double
     let maximumTemperature: Double
     let iconURL: URL
+    let forecastConditionDescription: String
     
     func loadWeatherIcon(completion: @escaping (UIImage) -> Void) {
         guard let imageData = try? Data(contentsOf: iconURL) else {

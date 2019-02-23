@@ -42,6 +42,8 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
         
         NotificationCenter.default.addObserver(self, selector: #selector(receivedCurrentWeather), name: NSNotification.Name(rawValue: "Current Weather Available"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(receivedForecastWeather), name: NSNotification.Name(rawValue: "ForecastWeather Available"), object: nil)
+        
+        self.forecastTableView.rowHeight = 90
     }
     
     // MARKS:- methods
@@ -55,7 +57,7 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
             
             // fetch weather icons for a 5 day forecast and display data
             self.cellViewModels = fiveDayForecast.map {
-                ForecastWeatherCell(weekDay: $0.dt_txt, minimumTemperature: $0.main.minimumTemperature, maximumTemperature: $0.main.maximumTemperature, iconURL: URL(string: "https://openweathermap.org/img/w/\($0.weather[0].icon).png")!)
+                ForecastWeatherCell(weekDay: $0.dt_txt, minimumTemperature: $0.main.minimumTemperature, maximumTemperature: $0.main.maximumTemperature, iconURL: URL(string: "https://openweathermap.org/img/w/\($0.weather[0].icon).png")!, forecastConditionDescription: $0.weather[0].description)
             }
             
             OperationQueue.main.addOperation {
@@ -74,12 +76,23 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
 //            self.visibility.text = "\(currentWeather.visibility) km"
 //            self.pressure.text = "\(currentWeather.main.pressure) hPa"
 //            self.humidity.text = "\(currentWeather.main.humidity) %"
-//            self.currentTempLabel.text = "\(Int(currentWeather.main.currentTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
+            self.currentTempLabel.text = "\(Int(currentWeather.main.currentTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
 //            self.sunrise.text = "\(currentWeather.sys.sunrise)"
 //            self.sunset.text = "\(currentWeather.sys.sunrise)"
             self.minTemperatureLabel.text = "\(Int(currentWeather.main.minimumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
             self.maxTemperatureLabel.text = "\(Int(currentWeather.main.minimumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
             self.conditionDescriptionLabel.text = "\(currentWeather.weather[0].description)"
+            
+            let backgroundColor = "\(currentWeather.weather[0].main)"
+            if backgroundColor.lowercased().contains("clear") {
+                self.view.backgroundColor = UIColor.sunnyDay
+            } else if backgroundColor.lowercased().contains("cloud") {
+                self.view.backgroundColor = UIColor.cloudyDay
+            } else if backgroundColor.lowercased().contains("rain") {
+                self.view.backgroundColor = UIColor.rainyDay
+            } else {
+                self.view.backgroundColor = UIColor.skyBlue
+            }
             
             guard let imageData = try? Data(contentsOf: URL(string: "https://openweathermap.org/img/w/\(currentWeather.weather[0].icon).png")!) else {
                 return
@@ -181,6 +194,7 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
         
         cell.minTemperatureLabel.text = "\(Int(weatherCell.minimumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
         cell.maxTemperatureLabel.text = "\(Int(weatherCell.maximumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
+        cell.forecastConditionDescription.text = weatherCell.forecastConditionDescription
         
         return cell
     }
