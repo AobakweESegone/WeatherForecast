@@ -115,8 +115,8 @@ struct AESOpenWeatherMapAPI {
         let dateTaken = forecastHour.dt_txt
         
         let currentTemperature = forecastHour.main.currentTemperature
-        let minimumTemperature = forecastHour.main.minimumTemperature
-        let maximumTemperature = forecastHour.main.maximumTemperature
+        let minimumTemperature = forecastHour.main.minimumTemperature != nil ? forecastHour.main.minimumTemperature : 0.0
+        let maximumTemperature = forecastHour.main.maximumTemperature != nil ? forecastHour.main.maximumTemperature : 0.0
         
         // weather has only one item in it
         let weather = forecastHour.weather[0]
@@ -124,7 +124,7 @@ struct AESOpenWeatherMapAPI {
         let weatherDescription = weather.description
         let weatherConditionIconURL = URL(string: "https://openweathermap.org/img/w/\(weather.icon).png")
         
-        return FiveDayForecastWeather(weatherCondition: weatherCondition, weatherConditionDescription: weatherDescription, weatherConditionIconURL: weatherConditionIconURL!, currentTemperature: currentTemperature, minimumTemperature: minimumTemperature, maximumTemperature: maximumTemperature, dateTaken: dateFormatter.date(from: dateTaken)!) as FiveDayForecastWeather
+        return FiveDayForecastWeather(weatherCondition: weatherCondition, weatherConditionDescription: weatherDescription, weatherConditionIconURL: weatherConditionIconURL!, currentTemperature: currentTemperature, minimumTemperature: minimumTemperature!, maximumTemperature: maximumTemperature!, dateTaken: dateFormatter.date(from: dateTaken)!) as FiveDayForecastWeather
         
     }
     

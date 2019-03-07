@@ -21,6 +21,7 @@
 		E2C855FB220DAB6A00F2E092 /* ForecastWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C855FA220DAB6A00F2E092 /* ForecastWeatherCell.swift */; };
 		E2C855FE220DADCB00F2E092 /* ForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C855FD220DADCB00F2E092 /* ForecastTableViewCell.swift */; };
 		E2FC62BB2213C1D500ACA21E /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FC62BA2213C1D500ACA21E /* CurrentWeather.swift */; };
+		E2FE6F152231A8DE00C3CEAB /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FE6F142231A8DE00C3CEAB /* ImageExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		E2C855FA220DAB6A00F2E092 /* ForecastWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastWeatherCell.swift; sourceTree = "<group>"; };
 		E2C855FD220DADCB00F2E092 /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
 		E2FC62BA2213C1D500ACA21E /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
+		E2FE6F142231A8DE00C3CEAB /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				E2A63DBB222129940015166A /* ColourExtensions.swift */,
+				E2FE6F142231A8DE00C3CEAB /* ImageExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				E2B294BB220CC6A3004401EB /* ForecastWeather.swift in Sources */,
 				E2B294C2220CD51A004401EB /* WeatherStore.swift in Sources */,
 				E2FC62BB2213C1D500ACA21E /* CurrentWeather.swift in Sources */,
+				E2FE6F152231A8DE00C3CEAB /* ImageExtension.swift in Sources */,
 				E2C855FE220DADCB00F2E092 /* ForecastTableViewCell.swift in Sources */,
 				E2B294BE220CD206004401EB /* OpenWeatherMapAPI.swift in Sources */,
 				E2A63DBC222129940015166A /* ColourExtensions.swift in Sources */,

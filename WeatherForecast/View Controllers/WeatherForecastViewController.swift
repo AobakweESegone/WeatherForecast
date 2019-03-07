@@ -32,13 +32,6 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     
     @IBOutlet weak var forecastTableView: UITableView!
     
-    @IBOutlet weak var cloudsCoverage: UILabel!
-    @IBOutlet weak var visibility: UILabel!
-    @IBOutlet weak var pressure: UILabel!
-    @IBOutlet weak var humidity: UILabel!
-    @IBOutlet weak var sunrise: UILabel!
-    @IBOutlet weak var sunset: UILabel!
-    
     // MARK:- view life cycle
 
     override func viewDidLoad() {
@@ -63,7 +56,7 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
             
             // fetch weather icons for a 5 day forecast and display data
             self.cellViewModels = fiveDayForecast.map {
-                ForecastWeatherCell(weekDay: $0.dt_txt, minimumTemperature: $0.main.minimumTemperature, maximumTemperature: $0.main.maximumTemperature, iconURL: URL(string: "https://openweathermap.org/img/w/\($0.weather[0].icon).png")!, forecastConditionDescription: $0.weather[0].description)
+                ForecastWeatherCell(weekDay: $0.dt_txt, minimumTemperature: $0.main.minimumTemperature != nil ? $0.main.minimumTemperature! : 0.0, maximumTemperature: $0.main.maximumTemperature != nil ? $0.main.maximumTemperature! : 0.0, iconURL: URL(string: "https://openweathermap.org/img/w/\($0.weather[0].icon).png")!, forecastConditionDescription: $0.weather[0].description)
             }
             
             OperationQueue.main.addOperation {
@@ -77,36 +70,37 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     @objc func receivedCurrentWeather(notification: Notification) {
         if notification.name.rawValue == "Current Weather Available" {
              let currentWeather: CurrentWeatherAPI = notification.userInfo!["currentWeather"] as! CurrentWeatherAPI
-//
-//            self.cloudsCoverage.text = "\(currentWeather.clouds.all) %"
-//            self.visibility.text = "\(currentWeather.visibility) km"
-//            self.pressure.text = "\(currentWeather.main.pressure) hPa"
-//            self.humidity.text = "\(currentWeather.main.humidity) %"
+
             self.currentTempLabel.text = "\(Int(currentWeather.main.currentTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
-//            self.sunrise.text = "\(currentWeather.sys.sunrise)"
-//            self.sunset.text = "\(currentWeather.sys.sunrise)"
-            self.minTemperatureLabel.text = "\(Int(currentWeather.main.minimumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
-            self.maxTemperatureLabel.text = "\(Int(currentWeather.main.minimumTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
+            self.minTemperatureLabel.text = currentWeather.main.minimumTemperature != nil ? "\(Int(currentWeather.main.minimumTemperature!.rounded(.toNearestOrAwayFromZero)))\u{00B0}" : ""
+            self.maxTemperatureLabel.text = currentWeather.main.maximumTemperature != nil ? "\(Int(currentWeather.main.maximumTemperature!.rounded(.toNearestOrAwayFromZero)))\u{00B0}" : ""
             self.conditionDescriptionLabel.text = "\(currentWeather.weather[0].description)"
             
-            let backgroundColor = "\(currentWeather.weather[0].main)"
-            if backgroundColor.lowercased().contains("clear") {
+            let weatherGroup = "\(currentWeather.weather[0].main)".lowercased()
+            if weatherGroup.contains("clear") {
+                self.backgroundImageView.image = UIImage.sunnyDay
                 self.view.backgroundColor = UIColor.sunnyDay
-            } else if backgroundColor.lowercased().contains("cloud") {
+            } else if weatherGroup.contains("clouds") {
+                self.backgroundImageView.image = UIImage.cloudyDay
                 self.view.backgroundColor = UIColor.cloudyDay
-            } else if backgroundColor.lowercased().contains("rain") {
+            } else if weatherGroup.contains("rain") {
+                self.backgroundImageView.image = UIImage.rainyDay
                 self.view.backgroundColor = UIColor.rainyDay
             } else {
                 self.view.backgroundColor = UIColor.skyBlue
             }
             
+            /*
+             
+             current weather icon excluded
+             
             guard let imageData = try? Data(contentsOf: URL(string: "https://openweathermap.org/img/w/\(currentWeather.weather[0].icon).png")!) else {
                 return
             }
             let image = UIImage(data: imageData)
             OperationQueue.main.addOperation {
                 self.currentWeatherIcon.image = image!
-            }
+            }*/
             
         }
     }

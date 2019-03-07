@@ -21,12 +21,12 @@ class WeatherStore {
     
     let session: URLSession = {
         let config = URLSessionConfiguration.default
-        config.waitsForConnectivity = true
+        //config.waitsForConnectivity = true
         return URLSession(configuration: config)
     }()
     
     func fetchCurrentWeather(with latitude: String, and longitude: String, completion: @escaping (CurrentWeatherResult) -> Void) {
-        let currentWeatherURL = AESOpenWeatherMapAPI.currentWeatherURL(for: latitude, and: longitude) as URL
+        let currentWeatherURL = AESOpenWeatherMapAPI.currentWeatherURL(for: latitude, and: longitude)
         //let request = URLRequest(url: currentWeatherURL )
         let task = session.dataTask(with: currentWeatherURL) {
             (weatherData, response, error) in

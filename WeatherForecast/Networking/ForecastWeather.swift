@@ -39,8 +39,8 @@ struct Coordinates: Decodable {
 
 struct Main: Decodable {
     let currentTemperature : Double
-    let minimumTemperature: Double
-    let maximumTemperature: Double
+    let minimumTemperature: Double?
+    let maximumTemperature: Double?
     let pressure: Double
     let seaLevel: Double
     let groundLevel: Double

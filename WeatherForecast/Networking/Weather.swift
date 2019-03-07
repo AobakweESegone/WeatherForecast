@@ -16,7 +16,7 @@ struct CurrentWeatherAPI: Decodable {
     let coord: CurrentCoordinates
     let weather: [CurentWeather]
     let main: CurrentMain
-    let visibility: Int
+    let visibility: Int?
     let wind: CurrentWind
     let clouds: CurrentClouds
     let dt: Int
@@ -42,8 +42,8 @@ struct System: Decodable {
 
 struct CurrentMain: Decodable {
     let currentTemperature : Double
-    let minimumTemperature: Double
-    let maximumTemperature: Double
+    let minimumTemperature: Double?
+    let maximumTemperature: Double?
     let pressure: Double
     let humidity: Int
     
@@ -61,6 +61,6 @@ struct CurrentClouds: Decodable {
 }
 
 struct CurrentWind: Decodable {
-    let speed: Double
-    //let deg: Double
+    let speed: Double?
+    let deg: Double?
 }
