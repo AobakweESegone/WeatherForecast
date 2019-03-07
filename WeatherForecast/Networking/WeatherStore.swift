@@ -40,16 +40,16 @@ class WeatherStore {
                 return
             }
             
-            guard let stringWithData = NSString(data: weatherData!, encoding: String.Encoding.utf8.rawValue) as String? else {
-                completion(.Failure(.apiError))
-                return
-            }
-            
-            let dataFromString = stringWithData.data(using: String.Encoding.utf8)
-            let data = NSData(data: dataFromString!)
+//            guard let stringWithData = NSString(data: weatherData!, encoding: String.Encoding.utf8.rawValue) as String? else {
+//                completion(.Failure(.apiError))
+//                return
+//            }
+//
+//            let dataFromString = stringWithData.data(using: String.Encoding.utf8)
+//            let data = NSData(data: dataFromString!)
             
             // serialize to model objects
-            let result = AESOpenWeatherMapAPI.currentWeatherFromJSONData(data: data as Data)
+            let result = AESOpenWeatherMapAPI.currentWeatherFromJSONData(data: weatherData! as Data)
             completion(result)
         }
         task.resume()
@@ -70,16 +70,16 @@ class WeatherStore {
                 return
             }
             
-            guard let stringWithData = NSString(data: weatherData!, encoding: String.Encoding.utf8.rawValue) as String? else {
-                completion(.Failure(.apiError))
-                return
-            }
-            
-            let dataFromString = stringWithData.data(using: String.Encoding.utf8)
-            let data = NSData(data: dataFromString!)
+//            guard let stringWithData = NSString(data: weatherData!, encoding: String.Encoding.utf8.rawValue) as String? else {
+//                completion(.Failure(.apiError))
+//                return
+//            }
+//            
+//            let dataFromString = stringWithData.data(using: String.Encoding.utf8)
+//            let data = NSData(data: dataFromString!)
             
             // serialize to model objects
-            let result = AESOpenWeatherMapAPI.forecastWeatherFromJSONData(data: data as Data)
+            let result = AESOpenWeatherMapAPI.forecastWeatherFromJSONData(data: weatherData! as Data)
             completion(result)
         }
         task.resume()
