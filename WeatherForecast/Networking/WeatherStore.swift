@@ -25,7 +25,11 @@ class WeatherStore {
         return URLSession(configuration: config)
     }()
     
+    let dispatchGroup = DispatchGroup()
+    
     func fetchCurrentWeather(with latitude: String, and longitude: String, completion: @escaping (CurrentWeatherResult) -> Void) {
+        dispatchGroup.enter()
+        
         let currentWeatherURL = AESOpenWeatherMapAPI.currentWeatherURL(for: latitude, and: longitude)
         //let request = URLRequest(url: currentWeatherURL )
         let task = session.dataTask(with: currentWeatherURL) {
@@ -40,22 +44,26 @@ class WeatherStore {
                 return
             }
             
-//            guard let stringWithData = NSString(data: weatherData!, encoding: String.Encoding.utf8.rawValue) as String? else {
-//                completion(.Failure(.apiError))
-//                return
-//            }
-//
-//            let dataFromString = stringWithData.data(using: String.Encoding.utf8)
-//            let data = NSData(data: dataFromString!)
+            //            guard let stringWithData = NSString(data: weatherData!, encoding: String.Encoding.utf8.rawValue) as String? else {
+            //                completion(.Failure(.apiError))
+            //                return
+            //            }
+            //
+            //            let dataFromString = stringWithData.data(using: String.Encoding.utf8)
+            //            let data = NSData(data: dataFromString!)
             
             // serialize to model objects
             let result = AESOpenWeatherMapAPI.currentWeatherFromJSONData(data: weatherData! as Data)
             completion(result)
+            
+            self.dispatchGroup.leave()
         }
         task.resume()
     }
     
     func fetchfiveDayWeatherForecast(with latitude: String, and longitude: String, completion: @escaping (WeatherResult) -> Void) {
+        dispatchGroup.enter()
+        
         let fiveDayWeatherURL = AESOpenWeatherMapAPI.fiveDayWeatherForecastURL(for: latitude, and: longitude)
         //let request = URLRequest(url: fiveDayWeatherURL as URL)
         let task = session.dataTask(with: fiveDayWeatherURL) {
@@ -70,17 +78,19 @@ class WeatherStore {
                 return
             }
             
-//            guard let stringWithData = NSString(data: weatherData!, encoding: String.Encoding.utf8.rawValue) as String? else {
-//                completion(.Failure(.apiError))
-//                return
-//            }
-//            
-//            let dataFromString = stringWithData.data(using: String.Encoding.utf8)
-//            let data = NSData(data: dataFromString!)
+            //            guard let stringWithData = NSString(data: weatherData!, encoding: String.Encoding.utf8.rawValue) as String? else {
+            //                completion(.Failure(.apiError))
+            //                return
+            //            }
+            //
+            //            let dataFromString = stringWithData.data(using: String.Encoding.utf8)
+            //            let data = NSData(data: dataFromString!)
             
             // serialize to model objects
             let result = AESOpenWeatherMapAPI.forecastWeatherFromJSONData(data: weatherData! as Data)
             completion(result)
+            
+            self.dispatchGroup.leave()
         }
         task.resume()
     }

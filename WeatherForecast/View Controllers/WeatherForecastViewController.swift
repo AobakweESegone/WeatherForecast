@@ -32,13 +32,15 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     
     @IBOutlet weak var forecastTableView: UITableView!
     
+    var currentWeatherDictionary: CurrentWeatherAPI?
+    var weatherForecastDictionary: WeatherForecastAPI?
+    
+    let dispatchGroup = DispatchGroup()
+    
     // MARK:- view life cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(receivedCurrentWeather), name: NSNotification.Name(rawValue: "Current Weather Available"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(receivedForecastWeather), name: NSNotification.Name(rawValue: "ForecastWeather Available"), object: nil)
         
         self.forecastTableView.rowHeight = 90
         
@@ -69,8 +71,8 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     
     @objc func receivedCurrentWeather(notification: Notification) {
         if notification.name.rawValue == "Current Weather Available" {
-             let currentWeather: CurrentWeatherAPI = notification.userInfo!["currentWeather"] as! CurrentWeatherAPI
-
+            let currentWeather: CurrentWeatherAPI = notification.userInfo!["currentWeather"] as! CurrentWeatherAPI
+            
             self.currentTempLabel.text = "\(Int(currentWeather.main.currentTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
             self.minTemperatureLabel.text = currentWeather.main.minimumTemperature != nil ? "\(Int(currentWeather.main.minimumTemperature!.rounded(.toNearestOrAwayFromZero)))\u{00B0}" : ""
             self.maxTemperatureLabel.text = currentWeather.main.maximumTemperature != nil ? "\(Int(currentWeather.main.maximumTemperature!.rounded(.toNearestOrAwayFromZero)))\u{00B0}" : ""
@@ -94,20 +96,59 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
              
              current weather icon excluded
              
-            guard let imageData = try? Data(contentsOf: URL(string: "https://openweathermap.org/img/w/\(currentWeather.weather[0].icon).png")!) else {
-                return
-            }
-            let image = UIImage(data: imageData)
-            OperationQueue.main.addOperation {
-                self.currentWeatherIcon.image = image!
-            }*/
+             guard let imageData = try? Data(contentsOf: URL(string: "https://openweathermap.org/img/w/\(currentWeather.weather[0].icon).png")!) else {
+             return
+             }
+             let image = UIImage(data: imageData)
+             OperationQueue.main.addOperation {
+             self.currentWeatherIcon.image = image!
+             }*/
             
         }
     }
     
+    func updateInterface(withCurrentWeatherDictionary currentWeather: CurrentWeatherAPI, andForecastWeatherDictionary forecastWeather: WeatherForecastAPI) {
+        dispatchGroup.enter()
+        
+        let currentWeather = currentWeather
+        
+        self.currentTempLabel.text = "\(Int(currentWeather.main.currentTemperature.rounded(.toNearestOrAwayFromZero)))\u{00B0}"
+        self.minTemperatureLabel.text = currentWeather.main.minimumTemperature != nil ? "\(Int(currentWeather.main.minimumTemperature!.rounded(.toNearestOrAwayFromZero)))\u{00B0}" : ""
+        self.maxTemperatureLabel.text = currentWeather.main.maximumTemperature != nil ? "\(Int(currentWeather.main.maximumTemperature!.rounded(.toNearestOrAwayFromZero)))\u{00B0}" : ""
+        self.conditionDescriptionLabel.text = "\(currentWeather.weather[0].description)"
+        
+        let weatherGroup = "\(currentWeather.weather[0].main)".lowercased()
+        if weatherGroup.contains("clear") {
+            self.backgroundImageView.image = UIImage.sunnyDay
+            self.view.backgroundColor = UIColor.sunnyDay
+        } else if weatherGroup.contains("clouds") {
+            self.backgroundImageView.image = UIImage.cloudyDay
+            self.view.backgroundColor = UIColor.cloudyDay
+        } else if weatherGroup.contains("rain") {
+            self.backgroundImageView.image = UIImage.rainyDay
+            self.view.backgroundColor = UIColor.rainyDay
+        } else {
+            self.view.backgroundColor = UIColor.skyBlue
+        }
+        
+        let forecastWeatherList = forecastWeather
+        
+        // retrieve the 5 day forecast from the posted weather forecast dictionary
+        let fiveDayForecast: [ForecastHour] = computeFiveDayForecast(from: forecastWeatherList.list)
+        
+        // fetch weather icons for a 5 day forecast and display data
+        self.cellViewModels = fiveDayForecast.map {
+            ForecastWeatherCell(weekDay: $0.dt_txt, minimumTemperature: $0.main.minimumTemperature != nil ? $0.main.minimumTemperature! : 0.0, maximumTemperature: $0.main.maximumTemperature != nil ? $0.main.maximumTemperature! : 0.0, iconURL: URL(string: "https://openweathermap.org/img/w/\($0.weather[0].icon).png")!, forecastConditionDescription: $0.weather[0].description)
+        }
+        
+        currentLocation.text = "\(forecastWeatherList.city.name)\n\(forecastWeatherList.city.country)"
+        
+        dispatchGroup.leave()
+    }
+    
     /*
      * computeFiveDayForecast(from:) computes the next 5 days weather
-    */
+     */
     
     func computeFiveDayForecast(from weatherForecastList:[ForecastHour]) -> [ForecastHour] {
         var dateTimes: [Int] = [] // an array of date times
@@ -189,12 +230,16 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        dispatchGroup.enter()
+        
         let weatherCell = cellViewModels[indexPath.row]
         
         let cell: ForecastTableViewCell = tableView.dequeueReusableCell(withIdentifier: "forecastWeatherCell", for: indexPath) as! ForecastTableViewCell
         
         weatherCell.loadWeatherIcon(completion: { (image) in
             cell.conditionIcon.image = image
+            
+            self.dispatchGroup.leave()
         })
         
         let today = ", today"
@@ -227,11 +272,7 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
                     switch weatherResult {
                     case let .Success(weather):
                         
-                        let currentWeatherDictionary = ["currentWeather": weather]
-                        
-                        OperationQueue.main.addOperation {
-                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Current Weather Available"), object: nil, userInfo: currentWeatherDictionary)
-                        }
+                        self.currentWeatherDictionary = weather
                     case .Failure(_): break
                     }
                 }
@@ -240,11 +281,15 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
                     switch weatherResult {
                     case let .Success(weather):
                         
-                        let weatherForecastDictionary = ["forecastWeather": weather]
+                        self.weatherForecastDictionary = weather
                         
-                        OperationQueue.main.addOperation {
-                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ForecastWeather Available"), object: nil, userInfo: weatherForecastDictionary)
+                        self.store.dispatchGroup.notify(queue: .main) {
+                            self.dispatchGroup.enter()
+                            
+                            self.updateInterface(withCurrentWeatherDictionary: self.currentWeatherDictionary!, andForecastWeatherDictionary: self.weatherForecastDictionary!)
+                            self.forecastTableView.reloadData()
                         }
+                        
                     case .Failure(_): break
                     }
                 }
@@ -295,5 +340,5 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
             
         }
     }
-
+    
 }
