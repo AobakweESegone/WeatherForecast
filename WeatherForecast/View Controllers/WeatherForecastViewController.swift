@@ -37,6 +37,7 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     
     let dispatchGroup = DispatchGroup()
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     // MARK:- view life cycle
     
     override func viewDidLoad() {
@@ -144,6 +145,8 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
         currentLocation.text = "\(forecastWeatherList.city.name)\n\(forecastWeatherList.city.country)"
         
         dispatchGroup.leave()
+        
+        self.activityIndicator.stopAnimating()
     }
     
     /*
@@ -258,6 +261,8 @@ class WeatherForecastViewController: UIViewController, UITableViewDataSource, UI
     
     // MARK:- location manager delegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        self.activityIndicator.startAnimating()
+        
         if let lat = locations.last?.coordinate.latitude, let long = locations.last?.coordinate.longitude {
             
             if didFindLocation != true {

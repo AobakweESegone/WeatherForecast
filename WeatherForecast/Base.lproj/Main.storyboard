@@ -18,6 +18,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="qUB-BS-SzB">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ysb-mr-R6m">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
@@ -190,13 +193,16 @@
                         <color key="backgroundColor" red="0.070588235294117646" green="0.50980392156862742" blue="0.63529411764705879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="Ysb-mr-R6m" secondAttribute="bottom" id="GAl-qj-d4r"/>
+                            <constraint firstItem="qUB-BS-SzB" firstAttribute="centerY" secondItem="Q0M-7m-14E" secondAttribute="centerY" id="KMo-oH-43U"/>
                             <constraint firstItem="Ysb-mr-R6m" firstAttribute="leading" secondItem="xXU-aI-Yw7" secondAttribute="leading" id="aEh-AS-dMC"/>
+                            <constraint firstItem="qUB-BS-SzB" firstAttribute="centerX" secondItem="Q0M-7m-14E" secondAttribute="centerX" id="h7q-Ms-Vbu"/>
                             <constraint firstAttribute="trailing" secondItem="Ysb-mr-R6m" secondAttribute="trailing" id="i6T-9Y-5gk"/>
                             <constraint firstItem="Ysb-mr-R6m" firstAttribute="top" secondItem="Q0M-7m-14E" secondAttribute="top" id="qSE-HC-Wpd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xXU-aI-Yw7"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="qUB-BS-SzB" id="E8a-hw-Xtr"/>
                         <outlet property="backgroundImageView" destination="DgZ-lh-UhQ" id="lkd-cB-OrT"/>
                         <outlet property="conditionDescriptionLabel" destination="eE6-CI-KLR" id="ogZ-ep-fUJ"/>
                         <outlet property="currentLocation" destination="qZJ-5v-pow" id="wHD-le-Jik"/>
